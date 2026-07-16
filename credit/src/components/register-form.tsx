@@ -4,6 +4,7 @@ import { Input } from "./ui/input"
 import { Button } from "./ui/button"
 import React from "react"
 import { toast } from "sonner"
+import { signUp } from "@/lib/auth-client"
 
 export default function RegisterForm() {
     async function handleSubmit(e: React.SubmitEvent<HTMLFormElement>) {
@@ -19,10 +20,21 @@ export default function RegisterForm() {
         const password = String(formData.get("password"));
         if (!password) return toast.error("Enter password");
 
-        console.log({ name, email, password });
-
-
-        
+        await signUp.email(
+            {
+                name, 
+                email,
+                password
+            },
+            {
+                onRequest: () => {},
+                onResponse: () => {},
+                onError: (ctx) => {
+                    toast.error(ctx.error.message);
+                },
+                onSuccess: () => {}
+            }
+        ) 
     }
 
     return (
