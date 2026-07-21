@@ -32,7 +32,7 @@ export default function LoginForm() {
                 toast.error(e.error.message);
             },
             onSuccess: () => {
-                router.push("/home")
+                router.push("/dashboard")
             }
         }
         

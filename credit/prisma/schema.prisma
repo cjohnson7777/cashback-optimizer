@@ -15,27 +15,28 @@ datasource db {
 }
 
 model Post {
-  id String @unique @default(uuid())
-  name String
+  id        String   @unique @default(uuid())
+  name      String
   createdAt DateTime @default(now())
 
   userId String
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
   @@map("posts")
 }
 
-
 model User {
-  id            String    @id
+  id            String       @id
   name          String
   email         String
-  emailVerified Boolean   @default(false)
+  emailVerified Boolean      @default(false)
   image         String?
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
   sessions      Session[]
   accounts      Account[]
-  posts Post[]
+  posts         Post[]
+  cards         CreditCard[]
 
   @@unique([email])
   @@map("users")
@@ -87,4 +88,13 @@ model Verification {
 
   @@index([identifier])
   @@map("verifications")
+}
+
+model CreditCard {
+  id         String  @unique @default(uuid())
+  name       String
+  category   String
+  multiplier Int
+  userId     String?
+  user       User?   @relation(fields: [userId], references: [id])
 }
