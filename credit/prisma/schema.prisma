@@ -26,17 +26,17 @@ model Post {
 }
 
 model User {
-  id            String       @id
+  id            String     @id
   name          String
   email         String
-  emailVerified Boolean      @default(false)
+  emailVerified Boolean    @default(false)
   image         String?
-  createdAt     DateTime     @default(now())
-  updatedAt     DateTime     @updatedAt
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
   sessions      Session[]
   accounts      Account[]
   posts         Post[]
-  cards         CreditCard[]
+  cards         UserCard[]
 
   @@unique([email])
   @@map("users")
@@ -91,10 +91,35 @@ model Verification {
 }
 
 model CreditCard {
-  id         String  @unique @default(uuid())
+  id         String     @unique @default(uuid())
   name       String
+  issuer     String
+  rewards    Reward[]
   category   String
   multiplier Int
   userId     String?
-  user       User?   @relation(fields: [userId], references: [id])
+  users      UserCard[]
+
+  @@map("creditCards")
+}
+
+model Reward {
+  id           String     @unique @default(uuid())
+  category     String
+  multiplier   Float
+  creditCardId String
+  creditCard   CreditCard @relation(fields: [creditCardId], references: [id], onDelete: Cascade)
+
+  @@map("rewards")
+}
+
+model UserCard {
+  id           String     @id @default(uuid())
+  userId       String
+  user         User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  creditCardId String
+  creditCard   CreditCard @relation(fields: [creditCardId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, creditCardId])
+  @@map("userCards")
 }
