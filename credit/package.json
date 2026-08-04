@@ -35,10 +35,14 @@
     "eslint-config-next": "16.2.10",
     "prisma": "^6.7.0",
     "tailwindcss": "^4",
+    "tsx": "^4.23.1",
     "typescript": "^5"
   },
   "allowScripts": {
     "sharp@0.34.5": true,
     "unrs-resolver@1.12.2": true
+  },
+  "prisma": {
+    "seed": "tsx prisma/seed.ts"
   }
 }

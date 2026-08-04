@@ -91,22 +91,22 @@ model Verification {
 }
 
 model CreditCard {
-  id         String     @unique @default(uuid())
-  name       String
-  issuer     String
-  rewards    Reward[]
-  category   String
-  multiplier Int
-  userId     String?
-  users      UserCard[]
+  id       String  @id @default(uuid())
+  name     String
+  issuer   String
+  imageUrl String?
 
-  @@map("creditCards")
+  rewards Reward[]
+  users   UserCard[]
+
+  @@map("creditcards")
 }
 
 model Reward {
-  id           String     @unique @default(uuid())
-  category     String
-  multiplier   Float
+  id         String @id @default(uuid())
+  category   String
+  multiplier Float
+
   creditCardId String
   creditCard   CreditCard @relation(fields: [creditCardId], references: [id], onDelete: Cascade)
 
@@ -114,12 +114,14 @@ model Reward {
 }
 
 model UserCard {
-  id           String     @id @default(uuid())
-  userId       String
-  user         User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id String @id @default(uuid())
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
   creditCardId String
   creditCard   CreditCard @relation(fields: [creditCardId], references: [id], onDelete: Cascade)
 
   @@unique([userId, creditCardId])
-  @@map("userCards")
+  @@map("usercards")
 }
