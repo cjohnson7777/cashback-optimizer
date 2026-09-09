@@ -105,7 +105,8 @@ model CreditCard {
 model Reward {
   id         String @id @default(uuid())
   category   String
-  multiplier Float
+  multiplier Float?
+  percentage Float?
 
   creditCardId String
   creditCard   CreditCard @relation(fields: [creditCardId], references: [id], onDelete: Cascade)
