@@ -9,7 +9,11 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel"
+import { PrismaClient } from "@/generated/prisma";
 
+const prisma = new PrismaClient()
+
+const cards = await prisma.creditCard.findMany()
 
 export default function Home() {
   return (
@@ -36,32 +40,30 @@ export default function Home() {
       </section>
       
       <section className="p-32">
-        <h2 className="text-4xl font-medium">Shop</h2>
-        <Carousel
+        <h2 className="text-4xl font-medium">Cards</h2>
+    <Carousel
       opts={{
-        align: "start",
+      align: "start",
       }}
-      className="w-full max-w-[12rem] sm:max-w-sm md:max-w-full"
-    >
+      className="w-full max-w-[12rem] sm:max-w-sm md:max-w-full">
       <CarouselContent>
-        {mockStoreItems.map((item) => (
-          <CarouselItem key={item.id} className="basis-1/2 lg:basis-1/3">
+        {cards.map((card) => (
+          <CarouselItem key={card.id} className="basis-1/2 lg:basis-1/3">
             <div className="p-4">
-                <CarouselContent className="p-4">
-                  <div >
-                    <img src={item.imageUrl}/>
-                    <p>{item.name}</p>
-                    <p>{item.price}</p>
-                  </div>
-                </CarouselContent>
+              <CarouselContent className="p-4">
+                <div >
+                  {/* <img src={item.imageUrl}/> */}
+                  <p>{card.issuer}</p>
+                  <p>{card.name}</p>
+                </div>
+              </CarouselContent>
             </div>
-
           </CarouselItem>
         ))}
       </CarouselContent>
-       <CarouselPrevious />
-        <CarouselNext />
-    </Carousel>
+      <CarouselPrevious />
+      <CarouselNext />
+  </Carousel>
 
 
 
